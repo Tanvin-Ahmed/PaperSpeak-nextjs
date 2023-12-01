@@ -1,0 +1,11 @@
+import { useRouter, useSearchParams } from "next/navigation";
+
+const AuthCallBack = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const origin = searchParams.get("origin");
+
+  return <div>AuthCallBack</div>;
+};
+
+export default AuthCallBack;
