@@ -3,6 +3,9 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
+import Providers from "@/components/Providers";
+import "react-loading-skeleton/dist/skeleton.css";
+import { Toaster } from "@/components/ui/toaster";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -10,7 +13,7 @@ export const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Doc Whisper App",
+  title: "PaperSpeak App",
   description: "A simple chat with pdf application",
 };
 
@@ -27,8 +30,11 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Navbar />
-        {children}
+        <Providers>
+          <Toaster />
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );
