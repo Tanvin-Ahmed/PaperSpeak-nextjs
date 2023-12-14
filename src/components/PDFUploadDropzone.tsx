@@ -42,6 +42,9 @@ const PDFUploadDropzone = () => {
   };
 
   const handlePdfUpload = async (acceptedFile: File[]) => {
+    // const url = URL.createObjectURL(acceptedFile[0]);
+    // console.log(url);
+    // return;
     setIsUploading(true);
     const progressInterval = startSimulatedProgress();
 
