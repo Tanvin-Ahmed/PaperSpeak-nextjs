@@ -27,10 +27,10 @@ const Page = async ({ params }: PageProps) => {
   // h-[calc(100vh - 3.5rem)] here 3.5rem is the navbar height
   return (
     <div className="flex-1 justify-between flex flex-col h-[calc(100vh - 3.5rem)]">
-      <div className="mx-auto w-full max-w-8xl grow lg:flex xl:px-2">
+      <div className="mx-auto w-full max-w-8xl grow lg:flex xl:px-2 h-full">
         {/* left side */}
-        <div className="flex-1 xl:flex">
-          <div className="px4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6">
+        <div className="flex-1 xl:flex h-full">
+          <div className="px4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6 h-full">
             <PDFRenderer url={file.url} />
           </div>
         </div>
