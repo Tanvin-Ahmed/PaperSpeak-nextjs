@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
-import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { Button } from "../ui/button";
 import { Expand, Loader2 } from "lucide-react";
 import SimpleBar from "simplebar-react";
 import { Document, Page } from "react-pdf";
-import { useToast } from "./ui/use-toast";
+import { useToast } from "../ui/use-toast";
 import { useResizeDetector } from "react-resize-detector";
 
 const PdfFullScreen = ({ fileUrl }: { fileUrl: string }) => {
