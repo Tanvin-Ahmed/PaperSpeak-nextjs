@@ -3,6 +3,8 @@ import { privateProcedure, publicProcedure, router } from "./trpc";
 import { TRPCError } from "@trpc/server";
 import { db } from "@/db";
 import { z } from "zod";
+import { UTApi } from "uploadthing/server";
+import { getPineconeClient } from "@/lib/pinecone";
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -75,6 +77,18 @@ export const appRouter = router({
       await db.file.delete({
         where: { id: input.id },
       });
+
+      const uploadThing = new UTApi({ apiKey: process.env.UPLOADTHING_SECRET });
+      // get file key from url to delete it
+      const regex = /(?<=\.com\/).*/;
+      const fileKey = file?.url?.match(regex);
+      if (fileKey?.length) {
+        uploadThing.deleteFiles(fileKey[0]);
+        // delete the vector from pinecone vector db
+        const pinecone = getPineconeClient();
+        const pineconeIndex = pinecone.Index("paper-speak");
+        await pineconeIndex.deleteOne(fileKey[0]);
+      }
 
       return file;
     }),
