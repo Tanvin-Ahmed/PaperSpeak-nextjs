@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { z } from "zod";
 import { UTApi } from "uploadthing/server";
 import { getPineconeClient } from "@/lib/pinecone";
+import { INFINITE_QUERY_LIMIT } from "@/config/infinite-query";
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -41,6 +42,41 @@ export const appRouter = router({
       },
     });
   }),
+  getFillMessages: privateProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).nullish(),
+        fileId: z.string(),
+        cursor: z.string().nullish(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { userId } = ctx;
+      const { cursor, fileId } = input;
+      const limit = input.limit ?? INFINITE_QUERY_LIMIT;
+
+      const file = await db.file.findFirst({ where: { id: fileId, userId } });
+
+      if (!file) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      const messages = await db.message.findMany({
+        take: limit + 1, // to the cursor
+        where: { fileId },
+        orderBy: { createdAt: "desc" },
+        cursor: cursor ? { id: cursor } : undefined,
+        select: { id: true, isUserMessage: true, text: true, createdAt: true },
+      });
+
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (messages.length > limit) {
+        const nextItem = messages.pop();
+        nextCursor = nextItem?.id;
+      }
+
+      return { messages, nextCursor };
+    }),
   getFileUploadStatus: privateProcedure
     .input(z.object({ fileId: z.string() }))
     .query(async ({ input, ctx }) => {
