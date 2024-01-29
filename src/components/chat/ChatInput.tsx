@@ -48,7 +48,6 @@ const ChatInput = ({ isDisabled }: { isDisabled?: boolean }) => {
                 className="absolute bottom-1.5 right-[8px]"
                 aria-label="send message"
                 onClick={sendMessage}
-                type="submit"
               >
                 <Send className="h-4 w-4" />
               </Button>

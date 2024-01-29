@@ -42,7 +42,7 @@ export const appRouter = router({
       },
     });
   }),
-  getFillMessages: privateProcedure
+  getFileMessages: privateProcedure
     .input(
       z.object({
         limit: z.number().min(1).max(100).nullish(),
