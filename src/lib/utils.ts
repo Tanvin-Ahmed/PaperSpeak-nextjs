@@ -46,7 +46,7 @@ export const constructMetadata = ({
     },
     icons,
     metadataBase: new URL("https://paper-speak-nextjs.vercel.app"),
-    themeColor: "#FFF",
+    // themeColor: "#FFF",
     ...(noIndex && {
       robots: {
         index: false,

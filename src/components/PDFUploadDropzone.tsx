@@ -44,9 +44,34 @@ const PDFUploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
   };
 
   const handlePdfUpload = async (acceptedFile: File[]) => {
-    // const url = URL.createObjectURL(acceptedFile[0]);
-    // console.log(url);
-    // return;
+    // handle file upload exceptions
+
+    const file = acceptedFile[0];
+    // check if the file is pdf or not
+    const isPDF = file.type === "application/pdf";
+    if (!isPDF) {
+      toast({
+        title: "Only PDF files are acceptable",
+        description: "Please enter a PDF file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // handle file size limit
+    const maxSize = isSubscribed ? 16 * 1024 * 1024 : 4 * 1024 * 1024;
+
+    if (file.size > maxSize) {
+      toast({
+        title: "File exceeds maximum size",
+        description: `You can upload maximum ${
+          isSubscribed ? "16MB" : "4MB"
+        } file size`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsUploading(true);
     const progressInterval = startSimulatedProgress();
 
