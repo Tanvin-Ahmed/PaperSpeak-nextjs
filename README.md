@@ -14,4 +14,4 @@ This is the [Live link](https://paper-speak-nextjs.vercel.app/) please make a to
 - Prisma
 - MySQL
 - Stripe
-- Upload anything
+- Uploadthing
