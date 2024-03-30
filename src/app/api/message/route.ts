@@ -112,6 +112,10 @@ export const POST = async (req: NextRequest) => {
 
     return new StreamingTextResponse(stream);
   } catch (error) {
-    return new Response("Something went wrong", { status: 500 });
+    // console.log((error as Error).message);
+    return Response.json(
+      { message: (error as Error).message },
+      { status: 500 }
+    );
   }
 };

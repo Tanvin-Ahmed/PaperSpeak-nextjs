@@ -45,7 +45,9 @@ const ChatContextProvider = ({
       });
 
       if (!res.ok) {
-        throw new Error("Failed to send message");
+        return res.json().then((error) => {
+          throw new Error(error.message);
+        });
       }
 
       return res.body;
@@ -178,7 +180,12 @@ const ChatContextProvider = ({
         );
       }
     },
-    onError: (_, __, context) => {
+    onError: (error, __, context) => {
+      toast({
+        title: "Something went wrong!",
+        description: (error as Error).message,
+        variant: "destructive",
+      });
       setMessage(backupMessage.current);
       utils.getFileMessages.setData(
         { fileId },
